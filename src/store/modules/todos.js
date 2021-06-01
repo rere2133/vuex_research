@@ -38,6 +38,11 @@ const actions = {
     // console.log(res.data);
     commit("setTodos", res.data);
   },
+  async updateTodo({ commit }, updTodo) {
+    const res = await axios.put(`${todoUrl}/${updTodo.id}`, updTodo);
+    console.log(res.data);
+    commit("updateTodo", res.data);
+  },
 };
 
 //獲得data,改變states
@@ -46,6 +51,12 @@ const mutations = {
   newTodo: (state, todo) => state.todos.unshift(todo),
   removeTodo: (state, id) =>
     (state.todos = state.todos.filter((el) => el.id != id)),
+  updateTodo: (state, updTodo) => {
+    const idx = state.todos.findIndex((el) => el.id == updTodo.id);
+    if (idx != -1) {
+      state.todos.splice(idx, 1, updTodo);
+    }
+  },
 };
 
 export default {
